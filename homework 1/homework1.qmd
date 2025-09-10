@@ -80,3 +80,83 @@ pairwise.t.test(abalone$Rings, abalone$Sex)
 Since all p values are less than 0.05, we can say that they are all statisically significance. Thus the number of rings do differ across the three sexes
 
 
+###Problem 2
+*a.* Import the data into a data.frame in R. 
+```{r}
+data <- read.csv("food_expenditure.csv")
+foode <- data.frame(data)
+head(foode)
+```
+
+*b.* Clean up the variable names. Simplify them.
+```{r}
+foode_name <- c("ID", "Age", "Members", "State","Currency", "Total", "Grocery", "DineOut","Miscellaneous", "DineOut_n", "Alcohol", "Assistance")
+colnames(foode) <- foode_name
+head(foode)
+```
+*c.* Restrict the data to those paying in US dollars (USD). Show that it worked by confirming the number of observations before and after restricting the data.
+```{r}
+obs_total <- nrow(foode)
+foode_usa <- foode[foode$Currency == "USD",]
+obs_usd <- nrow(foode_usa)
+print(paste("the number of observations before is:", obs_total))
+print(paste("the number of observations after is:", obs_usd))
+```
+
+There are a number of issues with this data, likely due to the self-reported nature. For each of the following variables, clean them by removing any row with inappropriate data. For each variable, explain your rules for eliminating rows. For example, for the age variable, you might state “Excluded all minors under the age of 18”. (Note that there is no “right” answer here, the goal is to i) choose reasonable rules and ii) carry out the corresponding code.)
+
+*d.* The variable related to age.
+```{r}
+#chatgpt help me modified the function with dropna 
+#drop the rows with missing values
+library(tidyr)
+foode_clean <- foode %>%drop_na(Age)
+
+print(min(foode_clean$Age))
+print(max(foode_clean$Age))
+
+#remove the age below 18 and above 85.
+foode_clean <- foode_clean %>%
+  filter(between(Age, 18, 85))
+print(min(foode_clean$Age))
+print(max(foode_clean$Age))
+
+```
+*e.* The variable related to state.
+```{r}
+#remove the states that is not in USA
+#I ask chatgpt about the existence of r built-in states constants
+foode_clean <- foode_clean %>%
+  filter(State %in% state.abb)
+```
+
+*f.* The four variables related to food expenditures.
+```{r}
+foode_clean <- foode_clean %>% #drop the rows with missing values
+  drop_na(Total, Grocery, DineOut, Miscellaneous) %>%
+    filter(Total > 0,  #remove the expenditures that is not positive
+           Grocery > 0,
+           DineOut > 0,
+           Miscellaneous > 0)
+
+```
+
+*e.*The variable related to number of times dining out.
+```{r}
+foode_clean <- foode_clean %>%  #drop the rows with missing values
+  drop_na(DineOut_n) %>%
+    filter(between(DineOut_n, 0, 21)) #remove the number of dine out times that is negative or bigger than 21 because there are only 7 days a week and normally 3 meals a day.
+```
+
+*h.*Report your final number of observations after this cleaning.
+```{r}
+obs_final <- nrow(foode_clean)
+print(paste("The final number of observations is: ", obs_final))
+
+```
+
+###Problem 3
+
+
+
+
