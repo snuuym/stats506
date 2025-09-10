@@ -157,6 +157,88 @@ print(paste("The final number of observations is: ", obs_final))
 
 ###Problem 3
 
+*a.* Write function *nextCollatz* that given a positive integer, computes the next number in its Collatz sequence. Be sure to provide a reasonable error on an invalid input. Be sure to document your function (see instructions above).
+
+Input: A positive integer
+Output: A positive integer
+```{r}
+#' nextCollatz
+#'chatgpt taught me how to check if x is an integer
+#' @param x input a positive integer
+#' @returns the next number after the Collatz calculation, which is also a positive integer
+#' @examples nextCollatz(5) = 16
+nextCollatz <- function(x){
+  if (x <= 0 || x != as.integer(x)){
+    stop("This is not a positive integer")
+  }
+  if (x>0){
+    if (x%%2 ==0){
+      return (x/2)
+    }else{
+      return (3*x +1)
+    }
+  }
+}
+
+nextCollatz(5)
+nextCollatz(16)
+nextCollatz(8)
+nextCollatz(4)
+nextCollatz(2)
+```
+*b.* Create a function collatzSequence that returns the Collatz sequence for a given input. Use your nextCollatz function to perform the calculation. Be sure to provide a reasonable error on an invalid input. Be sure to document your function (see instructions above).
+
+Input: A positive integer
+Output: A list containing the vector of the entries in the Collatz sequence, beginning at the input and ending at 1; and the length of the Collatz sequence.
+
+```{r}
+
+#' collatzSequence
+#'
+#' @param x is a positive integer
+#'
+#' @returns a list containing the vector of the entries in the Collatz sequence, beginning at the input and ending at 1; and the length of the Collatz sequence.
+#'
+#' @examples
+collatzSequence <- function(x){
+  if (x <= 0 || x != as.integer(x)){
+    stop("This is not a positive integer")
+  }
+  collatz_seq <- x
+  while (x!= 1){
+    x<-nextCollatz(x)
+    collatz_seq <- c(collatz_seq, x)
+  }
+    return(list(
+    sequence = collatz_seq,
+    length = length(collatz_seq)
+  ))
+}
+
+collatzSequence(5)
+collatzSequence(19)
+
+```
+*c.* Use these functions to find the shortest and longest Collatz sequence starting with values between 100 and 500, inclusive. In the case of ties, report the lowest starting value.
+
+```{r}
+lengths <- sapply(100:500, function(n) collatzSequence(n)$length)
+
+shortest_start <- which.min(lengths) + 99   # adjust index because range starts at 100
+longest_start <- which.max(lengths) + 99
+
+print(paste("The shortest sequence is number ", shortest_start))
+print(paste("The length of the sequence is: ",collatzSequence(shortest_start)$length ))
+print(paste("The longest sequence is number ", longest_start))
+print(paste("The length of the sequence is: ",collatzSequence(longest_start)$length ))
+
+```
+
+
+
+
+
+
 
 
 
