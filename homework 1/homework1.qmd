@@ -5,6 +5,7 @@ format:
   html:   
     code-fold: true
     code-summary: "Show the code"
+    embed-resources: true
 ---
 The link to my github repository: [homework 1](https://github.com/snuuym/stats506/tree/main/homework%201)
 
