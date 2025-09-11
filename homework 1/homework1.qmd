@@ -1,10 +1,15 @@
 ---
 title: "homework1"
-format: html
+uniqname: "mchenran"
+format: 
+  html:   
+    code-fold: true
+    code-summary: "Show the code"
 ---
+The link to my github repository: [homework 1](https://github.com/snuuym/stats506/tree/main/homework%201)
 
-###Problem 1
-*a.* Import the data into a data.frame in R. Use the information in the “abalone.names” file to give appropriate column names.
+### Problem 1
+***a.*** Import the data into a data.frame in R. Use the information in the “abalone.names” file to give appropriate column names.
 ```{r}
 data <- read.csv("abalone/abalone.data")
 abalone <- data.frame(data)
@@ -13,13 +18,13 @@ colnames(abalone) <- abalone_name
 head(abalone)
 ```
 
-*b.* The data contains information on three different sexes of abalone. Report the number of observations belonging to each sex.
+***b.*** The data contains information on three different sexes of abalone. Report the number of observations belonging to each sex.
 ```{r}
 table(abalone$Sex)
 ```
 
-*c.* Use the data to answer the following questions:
-  **1.** Which weight has the highest correlation with rings?
+***c.*** Use the data to answer the following questions:   
+**1.** Which weight has the highest correlation with rings?
 ```{r}
 weights_rings <- c("Whole",	"Shucked", "Viscera",	"Shell",'Rings')
 #chatgpt helped me with how to calculate correlations in R
@@ -29,7 +34,7 @@ correlations <- correlations[names(correlations) != "Rings"]
 correlations
 which.max(correlations)
 ```
-  From the table above we can see that Shell weight has the higest correlation with rings
+  *Answer:* From the table above we can see that Shell weight has the higest correlation with rings
   
   **2.** For that weight, which sex has the highest correlation?
 ```{r}
@@ -40,7 +45,7 @@ shell_corr <- abalone %>%
   summarise(correlation = cor(Shell, Rings))
 shell_corr
 ```
-From the table above, the sex I (infant) has the largest correlatin with rings  
+*Answer:* From the table above, the sex I (infant) has the largest correlatin with rings  
   
   **3.** What are the weights of the abalone with the most rings?
 ```{r}
@@ -56,9 +61,9 @@ percentage <- mean(abalone$Viscera > abalone$Shell)*100
 percentage
 
 ```
-6.51341% of abalones have a viscera weight larger than their shell weight.
+*Answer:* 6.51341% of abalones have a viscera weight larger than their shell weight.
 
-*d.* Create a table of correlations between weights and rings, within each sex. The columns should be the four weights, and the rows should be the sexes. 
+***d.*** Create a table of correlations between weights and rings, within each sex. The columns should be the four weights, and the rows should be the sexes. 
 ```{r}
 #this code is modified by chatgpt
 corr_table <- abalone %>%
@@ -72,29 +77,29 @@ corr_table <- abalone %>%
 corr_table
 ```
 
-*e.* Carry out a series of t-tests to examine whether the number of rings differs across the three sexes. Present the R output and interpret the results. 
+***e.*** Carry out a series of t-tests to examine whether the number of rings differs across the three sexes. Present the R output and interpret the results. 
 ```{r}
 #I consulted chatgpt for the existing R function that can calculate t-test
 pairwise.t.test(abalone$Rings, abalone$Sex)
 ```
-Since all p values are less than 0.05, we can say that they are all statisically significance. Thus the number of rings do differ across the three sexes
+*Answer:* Since all p values are less than 0.05, we can say that they are all statisically significance. Thus the number of rings do differ across the three sexes
 
 
-###Problem 2
-*a.* Import the data into a data.frame in R. 
+### Problem 2
+***a.*** Import the data into a data.frame in R. 
 ```{r}
 data <- read.csv("food_expenditure.csv")
 foode <- data.frame(data)
 head(foode)
 ```
 
-*b.* Clean up the variable names. Simplify them.
+***b.*** Clean up the variable names. Simplify them.
 ```{r}
 foode_name <- c("ID", "Age", "Members", "State","Currency", "Total", "Grocery", "DineOut","Miscellaneous", "DineOut_n", "Alcohol", "Assistance")
 colnames(foode) <- foode_name
 head(foode)
 ```
-*c.* Restrict the data to those paying in US dollars (USD). Show that it worked by confirming the number of observations before and after restricting the data.
+***c.*** Restrict the data to those paying in US dollars (USD). Show that it worked by confirming the number of observations before and after restricting the data.
 ```{r}
 obs_total <- nrow(foode)
 foode_usa <- foode[foode$Currency == "USD",]
@@ -105,7 +110,7 @@ print(paste("the number of observations after is:", obs_usd))
 
 There are a number of issues with this data, likely due to the self-reported nature. For each of the following variables, clean them by removing any row with inappropriate data. For each variable, explain your rules for eliminating rows. For example, for the age variable, you might state “Excluded all minors under the age of 18”. (Note that there is no “right” answer here, the goal is to i) choose reasonable rules and ii) carry out the corresponding code.)
 
-*d.* The variable related to age.
+***d.*** The variable related to age.
 ```{r}
 #chatgpt help me modified the function with dropna 
 #drop the rows with missing values
@@ -122,7 +127,7 @@ print(min(foode_clean$Age))
 print(max(foode_clean$Age))
 
 ```
-*e.* The variable related to state.
+***e.*** The variable related to state.
 ```{r}
 #remove the states that is not in USA
 #I ask chatgpt about the existence of r built-in states constants
@@ -130,7 +135,7 @@ foode_clean <- foode_clean %>%
   filter(State %in% state.abb)
 ```
 
-*f.* The four variables related to food expenditures.
+***f.*** The four variables related to food expenditures.
 ```{r}
 foode_clean <- foode_clean %>% #drop the rows with missing values
   drop_na(Total, Grocery, DineOut, Miscellaneous) %>%
@@ -141,28 +146,28 @@ foode_clean <- foode_clean %>% #drop the rows with missing values
 
 ```
 
-*e.*The variable related to number of times dining out.
+***e.***The variable related to number of times dining out.
 ```{r}
 foode_clean <- foode_clean %>%  #drop the rows with missing values
   drop_na(DineOut_n) %>%
     filter(between(DineOut_n, 0, 21)) #remove the number of dine out times that is negative or bigger than 21 because there are only 7 days a week and normally 3 meals a day.
 ```
 
-*h.*Report your final number of observations after this cleaning.
+***h.***Report your final number of observations after this cleaning.
 ```{r}
 obs_final <- nrow(foode_clean)
 print(paste("The final number of observations is: ", obs_final))
 
 ```
 
-###Problem 3
+### Problem 3
 
-*a.* Write function *nextCollatz* that given a positive integer, computes the next number in its Collatz sequence. Be sure to provide a reasonable error on an invalid input. Be sure to document your function (see instructions above).
+***a.*** Write function *nextCollatz* that given a positive integer, computes the next number in its Collatz sequence. Be sure to provide a reasonable error on an invalid input. Be sure to document your function (see instructions above).
 
 Input: A positive integer
 Output: A positive integer
 ```{r}
-#' nextCollatz
+#' nextCollatz is a function that computes the next number in its Collatz sequence when given a positive integer
 #'chatgpt taught me how to check if x is an integer
 #' @param x input a positive integer
 #' @returns the next number after the Collatz calculation, which is also a positive integer
@@ -186,14 +191,14 @@ nextCollatz(8)
 nextCollatz(4)
 nextCollatz(2)
 ```
-*b.* Create a function collatzSequence that returns the Collatz sequence for a given input. Use your nextCollatz function to perform the calculation. Be sure to provide a reasonable error on an invalid input. Be sure to document your function (see instructions above).
+***b.*** Create a function collatzSequence that returns the Collatz sequence for a given input. Use your nextCollatz function to perform the calculation. Be sure to provide a reasonable error on an invalid input. Be sure to document your function (see instructions above).
 
 Input: A positive integer
 Output: A list containing the vector of the entries in the Collatz sequence, beginning at the input and ending at 1; and the length of the Collatz sequence.
 
 ```{r}
 
-#' collatzSequence
+#' collatzSequence is a function that returns the Collatz sequence for the given positive integer input
 #'
 #' @param x is a positive integer
 #'
@@ -219,7 +224,7 @@ collatzSequence(5)
 collatzSequence(19)
 
 ```
-*c.* Use these functions to find the shortest and longest Collatz sequence starting with values between 100 and 500, inclusive. In the case of ties, report the lowest starting value.
+***c.*** Use these functions to find the shortest and longest Collatz sequence starting with values between 100 and 500, inclusive. In the case of ties, report the lowest starting value.
 
 ```{r}
 lengths <- sapply(100:500, function(n) collatzSequence(n)$length)
