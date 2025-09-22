@@ -1,0 +1,180 @@
+---
+title: "homework 2"
+uniqname: "mchenran"
+format: 
+  html:   
+    code-fold: true
+    code-summary: "Show the code"
+    embed-resources: true
+---
+
+The link to my github repository: [homework 1](https://github.com/snuuym/stats506/tree/main)
+
+## Problem 1 Modified Random walk
+
+Consider a 1-dimensional random walk with the following rules:
+
+1.  Start at 0.
+2.  At each step, move +1 or -1 with 50/50 probability.\
+    2.1. If +1 is chosen, 5% of the time move +10 instead.\
+    2.2. If -1 is chosen, 20% of the time move -3 instead.\
+3.  Repeat steps 2-4 times.(Note that if the +10 is chosen, it’s not +1 then +10, it is just +10.)
+
+Write a function to determine the end position of this random walk.
+
+The input and output should be: Input: The number of steps\
+Output: The final position of the walk
+
+### a.
+
+Implement the random walk in these three versions:   
+Version 1: using a loop.   
+Version 2: using built-in R vectorized functions. (Using no loops.) (Hint: Does the order of steps matter?)   
+Version 3: Implement the random walk using one of the “apply” functions.
+
+*Version 1*
+```{r}
+#' random_walk1: start at 0, generate walks for n times and return the final position of walk, using the for loop.
+#' @param n The number of steps
+#'
+#' @return The final position of the walk
+#' chatgpt taught me to use sample for assigning probability
+
+random_walk1 <- function(n){
+  position <- 0
+  for(i in 1:n){
+    step <- sample(
+    x = c(1, -1, 10, -3),     # possible steps
+    size = 1,           # draw one value
+    replace = TRUE,     # sampling with replacement
+    prob = c(0.475, 0.4, 0.025, 0.1)  # probabilities for each outcome
+  )
+  position <- position + step
+  }
+  return(position)
+}
+
+```
+
+*Version 2*
+```{r}
+#' random_walk2: start at 0, generate walks for n times and return the final position of walk, using built-in R vectorized functions.
+#' @param n The number of steps
+#'
+#' @return The final position of the walk
+
+random_walk2 <- function(n){
+  steps <- sample( 
+  x = c(1, -1, 10, -3),     # possible steps
+  size = n,           # draw one value
+  replace = TRUE,     # sampling with replacement
+  prob = c(0.475, 0.4, 0.025, 0.1)  # probabilities for each outcome
+  )
+  position <- sum(steps)
+  
+  return(position)
+}
+
+```
+
+*Version 3*
+```{r}
+#' random_walk3: start at 0, generate walks for n times and return the final position of walk, using the apply functiion
+#' @param n The number of steps
+#'
+#' @return The final position of the walk
+
+random_walk3 <- function(n){
+  steps <- replicate(n,{
+    sample(
+      x = c(1, -1, 10, -3),     # possible steps
+      size = 1,           # draw one value
+      replace = TRUE,     # sampling with replacement
+      prob = c(0.475, 0.4, 0.025, 0.1)  # probabilities for each outcome
+    )
+  })
+  position <- sum(steps)
+  
+  return(position)
+}
+
+```
+
+test case
+
+```{r}
+random_walk1(10)
+random_walk2(10)
+random_walk3(10)
+random_walk1(1000)
+random_walk2(1000)
+random_walk3(1000)
+```
+
+### b. 
+Demonstrate that the three versions can give the same result. Show this for both n=10 and n=1000. (You will need to add a way to control the randomization.)
+
+```{r}
+set.seed(123)
+random_walk1(10)
+set.seed(123)
+random_walk2(10)
+set.seed(123)
+random_walk3(10)
+
+set.seed(123)
+random_walk1(1000)
+set.seed(123)
+random_walk2(1000)
+set.seed(123)
+random_walk3(1000)
+
+
+```
+
+
+### c.   
+Use the microbenchmark package to clearly demonstrate the speed of the implementations. Compare performance with a low input (1,000) and a large input (100,000). Discuss the results.
+
+```{r}
+library(microbenchmark)
+
+microbenchmark(
+  loop = random_walk1(1000),
+  vectorized = random_walk2(1000),
+  applyed = random_walk3(1000)
+)
+
+microbenchmark(
+  loop = random_walk1(100000),
+  vectorized = random_walk2(100000),
+  applyed = random_walk3(100000)
+)
+```
+### Answer: 
+Whether in low input or large input, vectorized one always performs much better than loop or appplyed method.
+
+
+### d.  
+What is the probability that the random walk ends at 0 if the number of steps is 10? 100? 1000? Defend your answers with evidence based upon a Monte Carlo simulation.
+```{r}
+n_sim <- 100000
+simulations_10 <- replicate(n_sim, random_walk2(10))
+prob_10 <- mean(simulations_10==0)
+simulations_100 <- replicate(n_sim, random_walk2(100))
+prob_100 <- mean(simulations_100==0)
+simulations_1000 <- replicate(n_sim, random_walk2(1000))
+prob_1000 <- mean(simulations_1000==0)
+
+```
+
+```{r}
+cat("n=10: ",prob_10*100, "% \n", "n=100: ", prob_100*100, "% \n", "n=1000: ", prob_1000*100, "%")
+```
+
+
+
+
+
+
+
