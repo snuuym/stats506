@@ -27,12 +27,13 @@ Output: The final position of the walk
 
 ### a.
 
-Implement the random walk in these three versions:   
-Version 1: using a loop.   
-Version 2: using built-in R vectorized functions. (Using no loops.) (Hint: Does the order of steps matter?)   
+Implement the random walk in these three versions:\
+Version 1: using a loop.\
+Version 2: using built-in R vectorized functions. (Using no loops.) (Hint: Does the order of steps matter?)\
 Version 3: Implement the random walk using one of the “apply” functions.
 
 *Version 1*
+
 ```{r}
 #' random_walk1: start at 0, generate walks for n times and return the final position of walk, using the for loop.
 #' @param n The number of steps
@@ -57,6 +58,7 @@ random_walk1 <- function(n){
 ```
 
 *Version 2*
+
 ```{r}
 #' random_walk2: start at 0, generate walks for n times and return the final position of walk, using built-in R vectorized functions.
 #' @param n The number of steps
@@ -78,6 +80,7 @@ random_walk2 <- function(n){
 ```
 
 *Version 3*
+
 ```{r}
 #' random_walk3: start at 0, generate walks for n times and return the final position of walk, using the apply functiion
 #' @param n The number of steps
@@ -111,7 +114,8 @@ random_walk2(1000)
 random_walk3(1000)
 ```
 
-### b. 
+### b.
+
 Demonstrate that the three versions can give the same result. Show this for both n=10 and n=1000. (You will need to add a way to control the randomization.)
 
 ```{r}
@@ -132,8 +136,8 @@ random_walk3(1000)
 
 ```
 
+### c.
 
-### c.   
 Use the microbenchmark package to clearly demonstrate the speed of the implementations. Compare performance with a low input (1,000) and a large input (100,000). Discuss the results.
 
 ```{r}
@@ -151,12 +155,15 @@ microbenchmark(
   applyed = random_walk3(100000)
 )
 ```
-### Answer: 
+
+### Answer:
+
 Whether in low input or large input, vectorized one always performs much better than loop or appplyed method.
 
+### d.
 
-### d.  
 What is the probability that the random walk ends at 0 if the number of steps is 10? 100? 1000? Defend your answers with evidence based upon a Monte Carlo simulation.
+
 ```{r}
 n_sim <- 100000
 simulations_10 <- replicate(n_sim, random_walk2(10))
@@ -172,8 +179,176 @@ prob_1000 <- mean(simulations_1000==0)
 cat("n=10: ",prob_10*100, "% \n", "n=100: ", prob_100*100, "% \n", "n=1000: ", prob_1000*100, "%")
 ```
 
+## Problem 2 Mean of Mixture of Distributions
+
+The number of cars passing an intersection is a classic example of a Poisson distribution. At a particular intersection, Poisson is an appropriate distribution most of the time, but during rush hours (hours of 8am and 5pm) the distribution is really normally distributed with a much higher mean.
+
+Using a Monte Carlo simulation, estimate the average number of cars that pass an intersection per day under the following assumptions:
+
+From midnight until 7 AM, the distribution of cars per hour is Poisson with mean 1. From 9am to 4pm, the distribution of cars per hour is Poisson with mean 8. From 6pm to 11pm, the distribution of cars per hour is Poisson with mean 12. During rush hours (8am and 5pm), the distribution of cars per hour is Normal with mean 60 and variance 12 Accomplish this without using any loops.
+
+(Hint: This can be done with extremely minimal code.)
+
+```{r}
+#' car_dist: this function use Monte Carlo simulation to estimate the average number of cars that pass an intersection per day
+#' @param n_sim The number of simulations
+#'
+#' @return The estimated average number of cars that pass an intersection per day
+
+car_dist <- function(n_sim){
+  simulations <- replicate(n_sim, {
+                          morning <- rpois(n = 8, lambda = 1) #8 hours in the morning that has Poisson distribution
+                          day <- rpois(n = 8, lambda = 8) # 8 hours in the daytime that has Posson distribution
+                          night <- rpois(n = 6, lambda = 12)
+                          rush <- rnorm(n = 2, mean = 60, sd = sqrt(12))
+                          total <- sum(morning)+sum(day)+sum(night)+sum(rush)
+  }
+                )
+  return(mean(simulations))
+}
+```
+
+*Test*
+
+```{r}
+car_dist(100000)
+
+```
+
+###Answer:\
+According to our calculation, the estimation of average number of cars that pass an intersection per day under the following assumptions:264.
+
+## Problem 3
+
+```{r}
+youtube <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')
+```
+
+### a.
+
+Often in data analysis, we need to de-identify it. This is more important for studies of people, but let’s carry it out here. Remove any column that might uniquely identify a commercial. This includes but isn’t limited to things like brand, any URLs, the YouTube channel, or when it was published.
+
+Report the dimensions of the data after removing these columns.
+
+```{r}
+library(dplyr)
+removed_cols = c("superbowl_ads_dot_com_url", "youtube_url", "id", "etag", "published_at", "title","description", "thumbnail", "channel_title")
+removed_youtube <- youtube %>% select(-all_of(removed_cols))
+dim(removed_youtube)
+```
+
+*Answer:* There are 247 rows and 16 columns after de-identifying it.
+
+### b.
+
+For each of the following variables, examine their distribution. Determine whether\
+i) The variable could be used as is as the outcome in a linear regression model,\
+ii) The variable can use a transformation prior to being used as the outcome in a linear regression model, or\
+iii) The variable would not be appropriate to use as the outcome in a linear regression model.
+
+For each variable, report which category it falls in. If it requires a transformation, carry such a transformation out and use that transformation going forward.
+
+View counts\
+Like counts\
+Dislike counts Favorite counts\
+Comment counts\
+(Hint: At least the majority of these variables are appropriate to use.)
+
+```{r}
+vars <- c("view_count", "like_count", "dislike_count", "favorite_count", "comment_count")
+
+for(var in vars){
+  hist(
+    removed_youtube[[var]],
+    main = paste("Histogram of", var),
+    xlab = var
+  )
+}
+
+```
+
+From the above histgrams we can noe that *Favorite counts* belongs to category (iii), as we cannot see any pattern. For the rest of the variables, let's make a log transformation to further discuss it.
+
+```{r}
+# Transform variables
+removed_youtube <- removed_youtube %>%
+  mutate(
+    log_views     = log1p(view_count),
+    log_likes     = log1p(like_count),
+    log_dislikes  = log1p(dislike_count),
+    log_comments  = log1p(comment_count),
+  )
+
+# Check distributions (histograms or density plots)
+hist(removed_youtube$log_views, main="Log(View Counts)", xlab="log1p(Views)")
+hist(removed_youtube$log_likes, main="Log(Like Counts)", xlab="log1p(Likes)")
+hist(removed_youtube$log_dislikes, main="Log(Dislike Counts)", xlab="log1p(Dislikes)")
+hist(removed_youtube$log_comments, main="Log(Comments Counts)", xlab="log1p(Comments)")
+```
+
+All remaining variables shows the some kind of distribution pattern which made them good candidate for linear regression model. So they all belongs to type (ii).
+
+### c.
+
+For each variable in part b. that are appropriate, fit a linear regression model predicting them based upon each of the seven binary flags for characteristics of the ads, such as whether it is funny. Control for year as a continuous covariate.
+
+Discuss the results. Identify the direction of any statistically significant results.
+
+```{r}
+binary_flags <- c("funny", "show_product_quickly", "patriotic", "celebrity", "danger", "animals", "use_sex")
+b_vars <- c("log_views", "log_likes", "log_dislikes",  "log_comments")
+
+#chatgpt help me build the dynamical linear regression
+for (var in b_vars){
+  # Build regression formula dynamically
+  f <- as.formula(
+    paste(var, "~", paste(c(binary_flags, "year"), collapse = " + "))
+  )
+  
+  # Fit model
+  mod <- lm(f, data = removed_youtube)
+  
+  # Print results
+  cat("\n=== Model for", var, "===\n")
+  print(summary(mod))
+}
 
 
+
+
+```
+*Answer: * From the above regression fit, only log_like and log_dislie variables shows statistical significance as their p-value is less than 0.05. Inside the regression, year is the only statistical significant variable.   
+
+###d.
+Consider only the outcome of view counts. Calculate $\beta$ manually (without using $lm$) by first creating a proper design matrix, then using matrix algebra to estimate $\beta$ Confirm that you get the same result as $lm$ did in part c.
+
+```{r}
+#clean all the nan in the matrix 
+removed_youtube <- na.omit(removed_youtube)
+
+f <- as.formula(
+  paste("log_views", "~", paste(c(binary_flags, "year"), collapse = " + "))
+)
+
+# get the lm model for comparison
+lf_mod <- lm(f, data = removed_youtube)
+
+# create the design matrix
+des_mat <- model.matrix(f, data = removed_youtube)
+
+y <- removed_youtube$log_views
+
+# using matrix algebra to estimate \beta
+beta_hat <- solve(t(des_mat) %*% des_mat) %*% t(des_mat) %*% y
+beta_hat <- as.vector(beta_hat)
+names(beta_hat) <- names(lf_mod$coefficients)
+
+# Print and compare
+print(beta_hat)
+all.equal(beta_hat, lf_mod$coefficients)
+
+
+```
 
 
 
