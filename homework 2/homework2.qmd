@@ -8,7 +8,7 @@ format:
     embed-resources: true
 ---
 
-The link to my github repository: [homework 1](https://github.com/snuuym/stats506/tree/main)
+The link to my github repository: [homework 2](https://github.com/snuuym/stats506/tree/main/homework%202)
 
 ## Problem 1 Modified Random walk
 
@@ -82,11 +82,12 @@ random_walk2 <- function(n){
 *Version 3*
 
 ```{r}
-#' random_walk3: start at 0, generate walks for n times and return the final position of walk, using the apply functiion
+#' random_walk3: start at 0, generate walks for n times and return the final position of walk, using the special apply functiion: replicate
 #' @param n The number of steps
 #'
 #' @return The final position of the walk
 
+#chatgpt told me to use replicate as a simplified special apply method for this question
 random_walk3 <- function(n){
   steps <- replicate(n,{
     sample(
@@ -319,7 +320,7 @@ for (var in b_vars){
 ```
 *Answer: * From the above regression fit, only log_like and log_dislie variables shows statistical significance as their p-value is less than 0.05. Inside the regression, year is the only statistical significant variable.   
 
-###d.
+### d.
 Consider only the outcome of view counts. Calculate $\beta$ manually (without using $lm$) by first creating a proper design matrix, then using matrix algebra to estimate $\beta$ Confirm that you get the same result as $lm$ did in part c.
 
 ```{r}
