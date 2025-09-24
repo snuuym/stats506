@@ -233,12 +233,12 @@ Report the dimensions of the data after removing these columns.
 
 ```{r}
 library(dplyr)
-removed_cols = c("superbowl_ads_dot_com_url", "youtube_url", "id", "etag", "published_at", "title","description", "thumbnail", "channel_title")
+removed_cols = c("brand","superbowl_ads_dot_com_url", "youtube_url", "id", "etag", "published_at", "title","description", "thumbnail", "channel_title")
 removed_youtube <- youtube %>% select(-all_of(removed_cols))
 dim(removed_youtube)
 ```
 
-*Answer:* There are 247 rows and 16 columns after de-identifying it.
+*Answer:* There are 247 rows and 15 columns after de-identifying it.
 
 ### b.
 

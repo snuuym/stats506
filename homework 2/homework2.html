@@ -2434,42 +2434,42 @@ Version 3: Implement the random walk using one of the “apply” functions.</p>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">random_walk1</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -4</code></pre>
+<pre><code>[1] 3</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">random_walk2</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -6</code></pre>
+<pre><code>[1] 0</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">random_walk3</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9</code></pre>
+<pre><code>[1] 5</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">random_walk1</span>(<span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 30</code></pre>
+<pre><code>[1] -5</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">random_walk2</span>(<span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 58</code></pre>
+<pre><code>[1] -26</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">random_walk3</span>(<span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -26</code></pre>
+<pre><code>[1] 113</code></pre>
 </div>
 </div>
 </section>
@@ -2548,10 +2548,10 @@ overflows</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: microseconds
-       expr      min        lq       mean   median        uq      max neval
-       loop 1995.757 2146.6780 2273.60211 2192.495 2232.3475 5318.602   100
- vectorized   16.605   18.1835   19.07156   18.778   19.7005   25.256   100
-    applyed 2286.570 2454.7930 2640.23764 2523.243 2586.2185 3574.749   100</code></pre>
+       expr      min       lq       mean    median        uq      max neval cld
+       loop 1977.471 2032.903 2168.07057 2069.9055 2135.5670 5000.975   100 a  
+ vectorized   16.482   17.302   18.24418   18.0605   18.6345   26.117   100  b 
+    applyed 2250.982 2337.636 2507.42511 2373.3670 2485.5225 3365.403   100   c</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -2564,13 +2564,13 @@ overflows</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
        expr        min         lq       mean     median         uq        max
-       loop 213.634723 224.714584 239.034949 233.399696 247.739814 363.342943
- vectorized   1.509661   1.544859   1.579489   1.584753   1.600394   1.721549
-    applyed 252.622525 267.969337 288.637133 280.374728 301.617136 427.826267
- neval
-   100
-   100
-   100</code></pre>
+       loop 217.797125 228.440807 243.860491 236.123653 251.648816 404.172260
+ vectorized   1.455172   1.552137   1.583236   1.586372   1.602095   1.766772
+    applyed 252.269392 271.485518 295.382881 284.369850 307.662934 497.887600
+ neval cld
+   100 a  
+   100  b 
+   100   c</code></pre>
 </div>
 </div>
 </section>
@@ -2599,9 +2599,9 @@ overflows</code></pre>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;n=10: &quot;</span>,prob_10<span class="sc">*</span><span class="dv">100</span>, <span class="st">&quot;% </span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="st">&quot;n=100: &quot;</span>, prob_100<span class="sc">*</span><span class="dv">100</span>, <span class="st">&quot;% </span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="st">&quot;n=1000: &quot;</span>, prob_1000<span class="sc">*</span><span class="dv">100</span>, <span class="st">&quot;%&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>n=10:  13.281 % 
- n=100:  1.962 % 
- n=1000:  0.569 %</code></pre>
+<pre><code>n=10:  13.275 % 
+ n=100:  1.893 % 
+ n=1000:  0.578 %</code></pre>
 </div>
 </div>
 </section>
@@ -2640,7 +2640,7 @@ overflows</code></pre>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">car_dist</span>(<span class="dv">100000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 264.1186</code></pre>
+<pre><code>[1] 264.1177</code></pre>
 </div>
 </div>
 <p>###Answer:<br>
@@ -2679,15 +2679,15 @@ Attaching package: &#39;dplyr&#39;</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>removed_cols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;superbowl_ads_dot_com_url&quot;</span>, <span class="st">&quot;youtube_url&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;etag&quot;</span>, <span class="st">&quot;published_at&quot;</span>, <span class="st">&quot;title&quot;</span>,<span class="st">&quot;description&quot;</span>, <span class="st">&quot;thumbnail&quot;</span>, <span class="st">&quot;channel_title&quot;</span>)</span>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>removed_cols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;brand&quot;</span>,<span class="st">&quot;superbowl_ads_dot_com_url&quot;</span>, <span class="st">&quot;youtube_url&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;etag&quot;</span>, <span class="st">&quot;published_at&quot;</span>, <span class="st">&quot;title&quot;</span>,<span class="st">&quot;description&quot;</span>, <span class="st">&quot;thumbnail&quot;</span>, <span class="st">&quot;channel_title&quot;</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>removed_youtube <span class="ot">&lt;-</span> youtube <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">all_of</span>(removed_cols))</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(removed_youtube)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 247  16</code></pre>
+<pre><code>[1] 247  15</code></pre>
 </div>
 </div>
-<p><em>Answer:</em> There are 247 rows and 16 columns after de-identifying it.</p>
+<p><em>Answer:</em> There are 247 rows and 15 columns after de-identifying it.</p>
 </section>
 <section id="b.-1" class="level3">
 <h3 class="anchored" data-anchor-id="b.-1">b.</h3>
