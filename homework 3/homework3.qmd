@@ -8,7 +8,7 @@ format:
     embed-resources: true
 ---
 
-The link to my github repository: [homework 3](https://github.com/snuuym/stats506/tree/main)
+The link to my github repository: [homework 3](https://github.com/snuuym/stats506/tree/main/homework%203)
 
 ## Problem 1 
 
@@ -29,10 +29,6 @@ Gender
 Citizenship status
 Number of children 5 years or younger in the household
 Annual household income -  There’s also an issue with the ordering of the categories here; take a look, identify the issue, and implement a solution.
-
-```{r}
-unique(df_clean$INDHHIN2)
-```
 
 ```{r}
 library(dplyr)
@@ -200,7 +196,7 @@ microbenchmark(
     percent_active = 100 * mean(active)
   )
   },
-  sql_way = dbGetQuery(con, query),
+  sql_way = dbGetQuery(sakila, query),
   times = 50
 )
 
@@ -348,7 +344,7 @@ hist(log(apt$apt_num), main = "Histogram of log10(apartment numbers)" ,xlab ="lo
 Benford’s law is an observation about the distribution of the leading digit of real numerical data. Examine whether the apartment numbers appear to follow Benford’s law. Do you think the apartment numbers would pass as real data?
 ```{r}
 #chatgpt taught me how to plot the barplots together for comparison
-leading <- as.numeric(substr(as.character(apt_nums), 1, 1))
+leading <- as.numeric(substr(as.character(apt$apt_num), 1, 1))
 probs <- table(leading) / length(leading)
 benford <- log10(1 + 1 / (1:9))
 
