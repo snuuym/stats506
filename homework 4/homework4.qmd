@@ -1,0 +1,69 @@
+---
+title: "homework 3"
+uniqname: "mchenran"
+format: 
+  html:   
+    code-fold: true
+    code-summary: "Show the code"
+    embed-resources: true
+---
+
+The link to my github repository: [homework 4](https://github.com/snuuym/stats506/tree/main/homework%203)
+
+## Problem 1
+```{r}
+library(dplyr)
+library(tidyr)
+library(nzelect)
+data("nzge")
+```
+### a.  
+Generate a table (which can just be a nicely printed tibble) of vote count (regardless of party) per year/type. Make sure to sort it by vote count.
+```{r}
+vote_table <- 
+    nzge %>%
+    group_by(voting_type, election_year) %>%
+    summarise(total_votes = sum(votes)) %>%
+    arrange(desc(total_votes))
+
+vote_table
+```
+### b. 
+Focus only on the 2014 election. Report the proportion of votes for each party in the Candidate election. Again, produce a nice table and sort it by percent of vote.
+```{r}
+vote_2014 <- 
+    nzge %>%
+    filter(election_year == 2014, voting_type == "Candidate") %>%
+    group_by(party) %>%
+    summarise(party_vote = sum(votes)) %>%
+    mutate(percent_vote = 100 * party_vote / sum(party_vote)) %>%
+    arrange(desc(party_vote))
+
+vote_2014
+```
+### c.  
+Produce a nice table indicating, for each year, which party won the Candidate vote and which party won the Party vote.
+```{r}
+#chatgpt taught me the way to select the max value
+party_won <- 
+    nzge %>%
+    group_by(party, election_year, voting_type) %>%
+    summarise(party_vote = sum(votes)) %>%
+    group_by(election_year, voting_type) %>%
+    slice_max(order_by = party_vote, n = 1) %>%
+    arrange(election_year)
+
+party_won
+```
+
+
+
+
+
+
+
+
+
+
+
+

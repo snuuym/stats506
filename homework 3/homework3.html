@@ -2253,23 +2253,39 @@ Attaching package: &#39;dplyr&#39;</code></pre>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      RIAGENDR <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">99</span>, <span class="dv">999</span>) <span class="sc">~</span> <span class="cn">NA</span>, </span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(RIAGENDR)</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Citizenship ----</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">DMDCITZN =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      DMDCITZN <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">9</span>, <span class="dv">99</span>, <span class="dv">999</span>) <span class="sc">~</span> <span class="cn">NA</span>,   </span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(DMDCITZN)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Children under 5 ----</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">DMDHHSZA =</span> <span class="fu">ifelse</span>(DMDHHSZA <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">99</span>, <span class="dv">999</span>), <span class="cn">NA</span>, DMDHHSZA),  </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Income ----</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">INDHHIN2 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      INDHHIN2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">77</span>,<span class="dv">12</span>,<span class="dv">13</span>, <span class="dv">99</span>, <span class="dv">999</span>) <span class="sc">~</span> <span class="cn">NA</span>, <span class="co">#make the under 20k and over 20k columns NA</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(INDHHIN2)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">RIAGENDR =</span> <span class="fu">factor</span>(RIAGENDR,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Female&quot;</span>)),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Citizenship ----</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">DMDCITZN =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>      DMDCITZN <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">9</span>, <span class="dv">99</span>, <span class="dv">999</span>) <span class="sc">~</span> <span class="cn">NA</span>,   </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(DMDCITZN)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">DMDCITZN =</span> <span class="fu">factor</span>(DMDCITZN,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Citizen&quot;</span>,<span class="st">&quot;Non-Citizen&quot;</span>)),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Children under 5 ----</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">DMDHHSZA =</span> <span class="fu">ifelse</span>(DMDHHSZA <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">99</span>, <span class="dv">999</span>), <span class="cn">NA</span>, DMDHHSZA), </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">DMDHHSZA =</span> <span class="fu">factor</span>(DMDHHSZA,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>,<span class="st">&quot;3 and more&quot;</span>)),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Income ----</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">INDHHIN2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>      INDHHIN2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">77</span>,<span class="dv">12</span>,<span class="dv">13</span>, <span class="dv">99</span>, <span class="dv">999</span>) <span class="sc">~</span> <span class="cn">NA</span>, <span class="co">#make the under 20k and over 20k columns NA</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(INDHHIN2)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">INDHHIN2 =</span> <span class="fu">factor</span>(INDHHIN2,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">15</span>),</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;$0 - $4,999&quot;</span>, <span class="st">&quot;$5,000 - $9,999&quot;</span>, <span class="st">&quot;$10,000 - $14,999&quot;</span>, </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">&quot;$15,000 - $19,999&quot;</span>,<span class="st">&quot;$20,000 - $24,999&quot;</span>, <span class="st">&quot;$25,000 - $34,999&quot;</span>, </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">&quot;$35,000 - $44,999&quot;</span>, <span class="st">&quot;$45,000 - $54,999&quot;</span>,<span class="st">&quot;$55,000 - $64,999&quot;</span>, </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">&quot;$65,000 - $74,999&quot;</span>, <span class="st">&quot;$75,000 - $99,999&quot;</span>, <span class="st">&quot;$100,000 and Over&quot;</span>)),</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -2295,50 +2311,67 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#chatgpt taught me how to use ktable to present nicely</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#1R</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>model_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDR<span class="sc">~</span>RIAGENDR, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#2R</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDR<span class="sc">~</span>RIAGENDR<span class="sc">+</span> DMDCITZN <span class="sc">+</span> DMDHHSZA <span class="sc">+</span> INDHHIN2, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#1L</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>model_3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDL<span class="sc">~</span>RIAGENDR, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#2L</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>model_4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDL<span class="sc">~</span>RIAGENDR<span class="sc">+</span> DMDCITZN <span class="sc">+</span> DMDHHSZA <span class="sc">+</span> INDHHIN2, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#this part of code is generated by chatgpt</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>extract_model_info <span class="ot">&lt;-</span> <span class="cf">function</span>(model, name) {</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(model))</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Incidence Rate Ratios (IRRs) and 95% CI</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  irr <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(model))</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  ci <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(model))</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Model stats</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nobs</span>(model)</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  pseudo_r2 <span class="ot">&lt;-</span> <span class="fu">pR2</span>(model)[<span class="st">&quot;McFadden&quot;</span>]</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  aic <span class="ot">&lt;-</span> <span class="fu">AIC</span>(model)</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine results</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> name,</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">Term =</span> <span class="fu">names</span>(irr),</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">IRR =</span> <span class="fu">round</span>(irr, <span class="dv">3</span>),</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">CI_Lower =</span> <span class="fu">round</span>(ci[, <span class="dv">1</span>], <span class="dv">3</span>),</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">CI_Upper =</span> <span class="fu">round</span>(ci[, <span class="dv">2</span>], <span class="dv">3</span>),</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sample_Size =</span> n,</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pseudo_R2 =</span> <span class="fu">round</span>(pseudo_r2, <span class="dv">3</span>),</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">AIC =</span> <span class="fu">round</span>(aic, <span class="dv">1</span>)</span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply to each model</span></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_1, <span class="st">&quot;1R: Right Ear (Gender)&quot;</span>),</span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_2, <span class="st">&quot;2R: Right Ear (Full Model)&quot;</span>),</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_3, <span class="st">&quot;1L: Left Ear (Gender)&quot;</span>),</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_4, <span class="st">&quot;2L: Left Ear (Full Model)&quot;</span>)</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#the idea of using midpoint to create the continuous income variable is inspired by chatgpt</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>income_map <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$0 to $4,999&quot;</span>       <span class="ot">=</span> <span class="dv">2500</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$5,000 to $9,999&quot;</span>   <span class="ot">=</span> <span class="dv">7500</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$10,000 to $14,999&quot;</span> <span class="ot">=</span> <span class="dv">12500</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$15,000 to $19,999&quot;</span> <span class="ot">=</span> <span class="dv">17500</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$20,000 to $24,999&quot;</span> <span class="ot">=</span> <span class="dv">22500</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$25,000 to $34,999&quot;</span> <span class="ot">=</span> <span class="dv">30000</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$35,000 to $44,999&quot;</span> <span class="ot">=</span> <span class="dv">40000</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$45,000 to $54,999&quot;</span> <span class="ot">=</span> <span class="dv">50000</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$55,000 to $64,999&quot;</span> <span class="ot">=</span> <span class="dv">60000</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$65,000 to $74,999&quot;</span> <span class="ot">=</span> <span class="dv">70000</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$75,000 to $99,999&quot;</span> <span class="ot">=</span> <span class="dv">87500</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;$100,000 and Over&quot;</span>  <span class="ot">=</span> <span class="dv">125000</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>df_clean<span class="sc">$</span>conti_income <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(income_map[<span class="fu">as.character</span>(df_clean<span class="sc">$</span>INDHHIN2)])</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#chatgpt taught me how to use ktable to present nicely</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#1R</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>model_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDR<span class="sc">~</span>RIAGENDR, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#2R</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDR<span class="sc">~</span>RIAGENDR<span class="sc">+</span> DMDCITZN <span class="sc">+</span> DMDHHSZA <span class="sc">+</span> conti_income, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co">#1L</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>model_3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDL<span class="sc">~</span>RIAGENDR, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#2L</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>model_4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDL<span class="sc">~</span>RIAGENDR<span class="sc">+</span> DMDCITZN <span class="sc">+</span> DMDHHSZA <span class="sc">+</span> conti_income, <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>,<span class="at">na.action =</span> na.omit)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="co">#this part of code is generated by chatgpt</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>extract_model_info <span class="ot">&lt;-</span> <span class="cf">function</span>(model, name) {</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(model))</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Incidence Rate Ratios (IRRs) and 95% CI</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  irr <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(model))</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  ci <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(model))</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Model stats</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nobs</span>(model)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  pseudo_r2 <span class="ot">&lt;-</span> <span class="fu">pR2</span>(model)[<span class="st">&quot;McFadden&quot;</span>]</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>  aic <span class="ot">&lt;-</span> <span class="fu">AIC</span>(model)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine results</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> name,</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">Term =</span> <span class="fu">names</span>(irr),</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">IRR =</span> <span class="fu">round</span>(irr, <span class="dv">3</span>),</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">CI_Lower =</span> <span class="fu">round</span>(ci[, <span class="dv">1</span>], <span class="dv">3</span>),</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">CI_Upper =</span> <span class="fu">round</span>(ci[, <span class="dv">2</span>], <span class="dv">3</span>),</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sample_Size =</span> n,</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pseudo_R2 =</span> <span class="fu">round</span>(pseudo_r2, <span class="dv">3</span>),</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">AIC =</span> <span class="fu">round</span>(aic, <span class="dv">1</span>)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply to each model</span></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_1, <span class="st">&quot;1R: Right Ear (Gender)&quot;</span>),</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_2, <span class="st">&quot;2R: Right Ear (Full Model)&quot;</span>),</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_3, <span class="st">&quot;1L: Left Ear (Gender)&quot;</span>),</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_model_info</span>(model_4, <span class="st">&quot;2L: Left Ear (Full Model)&quot;</span>)</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Waiting for profiling to be done...</code></pre>
@@ -2375,15 +2408,15 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <table class="caption-top table table-sm table-striped small">
 <caption>Incidence Rate Ratios (IRRs) for Poisson Models</caption>
 <colgroup>
+<col style="width: 17%">
+<col style="width: 18%">
 <col style="width: 13%">
-<col style="width: 21%">
-<col style="width: 9%">
-<col style="width: 5%">
-<col style="width: 11%">
-<col style="width: 11%">
+<col style="width: 4%">
+<col style="width: 10%">
+<col style="width: 10%">
 <col style="width: 3%">
-<col style="width: 16%">
-<col style="width: 6%">
+<col style="width: 14%">
+<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2411,9 +2444,9 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <td style="text-align: right;">96618.5</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">RIAGENDR2…2</td>
+<td style="text-align: left;">RIAGENDRFemale…2</td>
 <td style="text-align: left;">1R: Right Ear (Gender)</td>
-<td style="text-align: left;">RIAGENDR2</td>
+<td style="text-align: left;">RIAGENDRFemale</td>
 <td style="text-align: right;">1.009</td>
 <td style="text-align: right;">1.003</td>
 <td style="text-align: right;">1.016</td>
@@ -2425,169 +2458,81 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <td style="text-align: left;">(Intercept)…3</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">83.672</td>
-<td style="text-align: right;">81.713</td>
-<td style="text-align: right;">85.664</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: right;">78.618</td>
+<td style="text-align: right;">77.644</td>
+<td style="text-align: right;">79.600</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">RIAGENDR2…4</td>
+<td style="text-align: left;">RIAGENDRFemale…4</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">RIAGENDR2</td>
-<td style="text-align: right;">1.015</td>
-<td style="text-align: right;">1.008</td>
-<td style="text-align: right;">1.022</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: left;">RIAGENDRFemale</td>
+<td style="text-align: right;">1.060</td>
+<td style="text-align: right;">1.043</td>
+<td style="text-align: right;">1.077</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">DMDCITZN2…5</td>
+<td style="text-align: left;">DMDCITZNNon-Citizen…5</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">DMDCITZN2</td>
-<td style="text-align: right;">1.042</td>
-<td style="text-align: right;">1.033</td>
-<td style="text-align: right;">1.052</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: left;">DMDCITZNNon-Citizen</td>
+<td style="text-align: right;">1.016</td>
+<td style="text-align: right;">0.989</td>
+<td style="text-align: right;">1.043</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DMDHHSZA…6</td>
+<td style="text-align: left;">DMDHHSZA1…6</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">DMDHHSZA</td>
-<td style="text-align: right;">0.996</td>
-<td style="text-align: right;">0.991</td>
-<td style="text-align: right;">1.001</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: left;">DMDHHSZA1</td>
+<td style="text-align: right;">0.971</td>
+<td style="text-align: right;">0.949</td>
+<td style="text-align: right;">0.994</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">INDHHIN210…7</td>
+<td style="text-align: left;">DMDHHSZA2…7</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN210</td>
-<td style="text-align: right;">1.006</td>
-<td style="text-align: right;">0.979</td>
-<td style="text-align: right;">1.033</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN214…8</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN214</td>
-<td style="text-align: right;">0.927</td>
-<td style="text-align: right;">0.903</td>
-<td style="text-align: right;">0.951</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN215…9</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN215</td>
-<td style="text-align: right;">0.954</td>
-<td style="text-align: right;">0.931</td>
-<td style="text-align: right;">0.977</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN22…10</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN22</td>
-<td style="text-align: right;">0.963</td>
-<td style="text-align: right;">0.935</td>
-<td style="text-align: right;">0.993</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN23…11</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN23</td>
-<td style="text-align: right;">1.011</td>
+<td style="text-align: left;">DMDHHSZA2</td>
+<td style="text-align: right;">0.946</td>
+<td style="text-align: right;">0.911</td>
 <td style="text-align: right;">0.983</td>
-<td style="text-align: right;">1.039</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INDHHIN24…12</td>
+<td style="text-align: left;">DMDHHSZA3 and more…8</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN24</td>
-<td style="text-align: right;">1.059</td>
-<td style="text-align: right;">1.031</td>
-<td style="text-align: right;">1.088</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: left;">DMDHHSZA3 and more</td>
+<td style="text-align: right;">1.287</td>
+<td style="text-align: right;">1.179</td>
+<td style="text-align: right;">1.401</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">INDHHIN25…13</td>
+<td style="text-align: left;">conti_income…9</td>
 <td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN25</td>
-<td style="text-align: right;">1.007</td>
-<td style="text-align: right;">0.981</td>
-<td style="text-align: right;">1.034</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
+<td style="text-align: left;">conti_income</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">14526.9</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INDHHIN26…14</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN26</td>
-<td style="text-align: right;">1.022</td>
-<td style="text-align: right;">0.997</td>
-<td style="text-align: right;">1.048</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN27…15</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN27</td>
-<td style="text-align: right;">1.036</td>
-<td style="text-align: right;">1.010</td>
-<td style="text-align: right;">1.063</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN28…16</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN28</td>
-<td style="text-align: right;">1.008</td>
-<td style="text-align: right;">0.983</td>
-<td style="text-align: right;">1.034</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN29…17</td>
-<td style="text-align: left;">2R: Right Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN29</td>
-<td style="text-align: right;">1.000</td>
-<td style="text-align: right;">0.974</td>
-<td style="text-align: right;">1.026</td>
-<td style="text-align: right;">3705</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">84675.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">(Intercept)…18</td>
+<td style="text-align: left;">(Intercept)…10</td>
 <td style="text-align: left;">1L: Left Ear (Gender)</td>
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">84.758</td>
@@ -2598,9 +2543,9 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <td style="text-align: right;">98685.1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">RIAGENDR2…19</td>
+<td style="text-align: left;">RIAGENDRFemale…11</td>
 <td style="text-align: left;">1L: Left Ear (Gender)</td>
-<td style="text-align: left;">RIAGENDR2</td>
+<td style="text-align: left;">RIAGENDRFemale</td>
 <td style="text-align: right;">1.013</td>
 <td style="text-align: right;">1.006</td>
 <td style="text-align: right;">1.020</td>
@@ -2609,169 +2554,81 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <td style="text-align: right;">98685.1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">(Intercept)…20</td>
+<td style="text-align: left;">(Intercept)…12</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">86.649</td>
-<td style="text-align: right;">84.676</td>
-<td style="text-align: right;">88.654</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: right;">78.975</td>
+<td style="text-align: right;">77.998</td>
+<td style="text-align: right;">79.960</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">RIAGENDR2…21</td>
+<td style="text-align: left;">RIAGENDRFemale…13</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">RIAGENDR2</td>
-<td style="text-align: right;">1.019</td>
-<td style="text-align: right;">1.012</td>
-<td style="text-align: right;">1.026</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: left;">RIAGENDRFemale</td>
+<td style="text-align: right;">1.083</td>
+<td style="text-align: right;">1.066</td>
+<td style="text-align: right;">1.101</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DMDCITZN2…22</td>
+<td style="text-align: left;">DMDCITZNNon-Citizen…14</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">DMDCITZN2</td>
-<td style="text-align: right;">1.019</td>
-<td style="text-align: right;">1.009</td>
-<td style="text-align: right;">1.028</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DMDHHSZA…23</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">DMDHHSZA</td>
-<td style="text-align: right;">0.983</td>
-<td style="text-align: right;">0.977</td>
-<td style="text-align: right;">0.988</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN210…24</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN210</td>
-<td style="text-align: right;">0.956</td>
-<td style="text-align: right;">0.931</td>
-<td style="text-align: right;">0.982</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN214…25</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN214</td>
-<td style="text-align: right;">0.948</td>
-<td style="text-align: right;">0.924</td>
-<td style="text-align: right;">0.971</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN215…26</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN215</td>
-<td style="text-align: right;">0.951</td>
-<td style="text-align: right;">0.929</td>
-<td style="text-align: right;">0.974</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN22…27</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN22</td>
-<td style="text-align: right;">0.977</td>
-<td style="text-align: right;">0.949</td>
+<td style="text-align: left;">DMDCITZNNon-Citizen</td>
+<td style="text-align: right;">1.033</td>
 <td style="text-align: right;">1.006</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: right;">1.060</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN23…28</td>
+<tr class="odd">
+<td style="text-align: left;">DMDHHSZA1…15</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN23</td>
+<td style="text-align: left;">DMDHHSZA1</td>
+<td style="text-align: right;">1.054</td>
 <td style="text-align: right;">1.030</td>
-<td style="text-align: right;">1.002</td>
-<td style="text-align: right;">1.058</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN24…29</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN24</td>
-<td style="text-align: right;">1.048</td>
-<td style="text-align: right;">1.021</td>
-<td style="text-align: right;">1.076</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: right;">1.078</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INDHHIN25…30</td>
+<td style="text-align: left;">DMDHHSZA2…16</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN25</td>
-<td style="text-align: right;">1.003</td>
-<td style="text-align: right;">0.977</td>
-<td style="text-align: right;">1.029</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: left;">DMDHHSZA2</td>
+<td style="text-align: right;">0.939</td>
+<td style="text-align: right;">0.904</td>
+<td style="text-align: right;">0.975</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">INDHHIN26…31</td>
+<td style="text-align: left;">DMDHHSZA3 and more…17</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN26</td>
-<td style="text-align: right;">0.941</td>
-<td style="text-align: right;">0.918</td>
-<td style="text-align: right;">0.964</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: left;">DMDHHSZA3 and more</td>
+<td style="text-align: right;">0.982</td>
+<td style="text-align: right;">0.889</td>
+<td style="text-align: right;">1.081</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INDHHIN27…32</td>
+<td style="text-align: left;">conti_income…18</td>
 <td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN27</td>
-<td style="text-align: right;">0.997</td>
-<td style="text-align: right;">0.972</td>
-<td style="text-align: right;">1.022</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INDHHIN28…33</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN28</td>
-<td style="text-align: right;">0.946</td>
-<td style="text-align: right;">0.923</td>
-<td style="text-align: right;">0.971</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INDHHIN29…34</td>
-<td style="text-align: left;">2L: Left Ear (Full Model)</td>
-<td style="text-align: left;">INDHHIN29</td>
-<td style="text-align: right;">1.004</td>
-<td style="text-align: right;">0.979</td>
-<td style="text-align: right;">1.031</td>
-<td style="text-align: right;">3665</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">86397.9</td>
+<td style="text-align: left;">conti_income</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">730</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">15054.4</td>
 </tr>
 </tbody>
 </table>
@@ -2785,31 +2642,31 @@ hurdle and zeroinfl functions by Achim Zeileis.</code></pre>
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#difference between males and females in irr</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(model_4)[<span class="st">&quot;RIAGENDR2&quot;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(model_4)[<span class="st">&quot;RIAGENDRFemale&quot;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>RIAGENDR2 
- 1.018923 </code></pre>
+<pre><code>RIAGENDRFemale 
+      1.083238 </code></pre>
 </div>
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_no_gender <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDL <span class="sc">~</span> DMDCITZN <span class="sc">+</span> DMDHHSZA <span class="sc">+</span> INDHHIN2,</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_no_gender <span class="ot">&lt;-</span> <span class="fu">glm</span>(AUXTWIDL <span class="sc">~</span> DMDCITZN <span class="sc">+</span> DMDHHSZA <span class="sc">+</span> conti_income,</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> df_clean, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>, <span class="at">na.action =</span> na.omit)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model_no_gender, model_4, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
 
-Model 1: AUXTWIDL ~ DMDCITZN + DMDHHSZA + INDHHIN2
-Model 2: AUXTWIDL ~ RIAGENDR + DMDCITZN + DMDHHSZA + INDHHIN2
+Model 1: AUXTWIDL ~ DMDCITZN + DMDHHSZA + conti_income
+Model 2: AUXTWIDL ~ RIAGENDR + DMDCITZN + DMDHHSZA + conti_income
   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
-1      3651      63723                          
-2      3650      63696  1   27.091 1.941e-07 ***
+1       725      10632                          
+2       724      10535  1   96.491 &lt; 2.2e-16 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 </div>
-<p><em>Answer:</em> The irr shows that females have an estimated 1.9% higher tympanometric width in the left ear than males, and the following anova test prove that the predicted value of Tympanometric width measure of the left ear differs between men and women.</p>
+<p><em>Answer:</em> The irr shows that females have an estimated 1.083238% higher tympanometric width in the left ear than males, and the following anova test prove that the predicted value of Tympanometric width measure of the left ear differs between men and women.</p>
 </section>
 </section>
 <section id="problem-2" class="level2">
@@ -2900,9 +2757,9 @@ potential integer overflows</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: microseconds
-    expr      min       lq      mean    median       uq      max neval cld
-   r_way 1129.755 1192.977 1273.4411 1247.1380 1265.137 2691.937    50  a 
- sql_way  153.627  160.966  167.3194  164.1845  171.175  210.494    50   b</code></pre>
+    expr      min       lq      mean   median       uq      max neval cld
+   r_way 1135.495 1262.882 1380.7308 1335.370 1400.314 2636.505    50  a 
+ sql_way  148.666  159.039  177.5653  173.307  181.917  261.744    50   b</code></pre>
 </div>
 </div>
 </section>
@@ -2969,8 +2826,8 @@ potential integer overflows</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: microseconds
     expr     min      lq     mean   median      uq      max neval cld
-   r_way 554.935 562.766 584.8699 570.9045 577.649 1020.121    50  a 
- sql_way  89.790  92.824 101.7136  97.6620 100.655  301.842    50   b</code></pre>
+   r_way 568.670 577.936 613.5027 585.5825 600.691 1291.828    50  a 
+ sql_way  91.389  96.350 102.4516 101.2700 104.591  168.879    50   b</code></pre>
 </div>
 </div>
 </section>
@@ -3043,8 +2900,8 @@ potential integer overflows</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
     expr      min       lq     mean   median       uq      max neval cld
-   r_way 21.93250 22.48801 23.03771 23.16742 23.45159 26.32487    50  a 
- sql_way 13.69326 14.24533 14.51949 14.45072 14.87726 15.42018    50   b</code></pre>
+   r_way 21.34370 21.68593 22.23438 22.12018 22.64824 25.74091    50  a 
+ sql_way 13.38293 13.66842 14.05477 13.93463 14.40047 14.79329    50   b</code></pre>
 </div>
 </div>
 </section>
@@ -3063,11 +2920,11 @@ potential integer overflows</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>com_ending <span class="ot">&lt;-</span> (<span class="fu">sum</span>(<span class="fu">grepl</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.com(</span><span class="sc">\\</span><span class="st">.|$)&quot;</span>, aus<span class="sc">$</span>web))<span class="sc">/</span><span class="fu">nrow</span>(aus))<span class="sc">*</span><span class="dv">100</span></span>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>com_ending <span class="ot">&lt;-</span> (<span class="fu">sum</span>(<span class="fu">grepl</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.com$&quot;</span>, aus<span class="sc">$</span>web))<span class="sc">/</span><span class="fu">nrow</span>(aus))<span class="sc">*</span><span class="dv">100</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>com_ending</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 100</code></pre>
+<pre><code>[1] 0</code></pre>
 </div>
 </div>
 </section>
