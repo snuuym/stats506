@@ -55,8 +55,154 @@ party_won <-
 
 party_won
 ```
+## Problem 2
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_2019.csv")
+head(data)
+colnames(data)
+```
+### a.  
+How many tournaments took place in 2019?
+```{r}
+library(dplyr)
+library(tidyr)
+data %>% 
+  filter(substr(tourney_date, 1, 4) == "2019") %>% 
+  summarise(total_tournaments = n_distinct(tourney_id))
+```
+
+### b.  
+Did any player win more than one tournament? If so, how many players won more than one tournament, and how many tournaments did the most winning player(s) win?
+```{r}
+winners <- data %>% 
+  filter(round == "F") %>%
+  group_by(winner_id) %>%
+  summarise(total_win = n_distinct(tourney_id)) %>%
+  filter(total_win > 1) %>%
+  arrange(desc(total_win))
+```
+Ans: There are 12 winners with more than 1 match. The most winning player wins 5 tournments.
+
+### c.  
+Is there any evidence that winners have more aces than losers?
+```{r}
+# the method of using pivot_longer function to convert w_ace and l_ace to "Winner" and "Loser" in a new column "role"
+library(dplyr)
+
+# Keep relevant columns and remove missing values
+aces_data <- data %>%
+  select(w_ace, l_ace) %>%
+  pivot_longer(cols = c(w_ace, l_ace),
+               names_to = "role",
+               values_to = "aces") %>%
+  mutate(role = ifelse(role == "w_ace", "Winner", "Loser")) %>%
+  drop_na()
+
+aces_data %>% group_by(role) %>% summarise(mean_aces = mean(aces), sd_aces = sd(aces))
+```
+
+### d.  
+Identify the player(s) with the highest win-rate. (Note that this is NOT asking for the highest number of wins.) Restrict to players with at least 5 matches.
+
+```{r}
+player <- data %>%
+  select(winner_id, loser_id, winner_name, loser_name, tourney_id) %>%
+  pivot_longer(cols = c(winner_id, loser_id),
+               names_to = "match_result",
+               values_to = "player_id") %>%
+  group_by(player_id) %>%
+  summarise(total_matches = n())
+
+player_stats <- player %>%
+  left_join(winners, join_by("player_id" == "winner_id")) %>%
+  mutate(wins = replace_na(total_win, 0),
+         win_rate = wins / total_matches) %>%
+  filter(total_matches >= 5) %>%
+  arrange(desc(win_rate))
+head(player_stats,1)
+```
+
+## Problem 3
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/refs/heads/master/rolling-averages/us-states.csv")
+head(data)
+colnames(data)
+```
+###a. 
+How many major and minor spikes in cases were there?
+```{r}
+#chatgpt taught me how to use ymd() to change date into date type so that it can be further manipulated.
+library(ggplot2)
+library(lubridate)
+covid <- data %>% 
+  group_by(date) %>%
+  summarise(usa_cases = mean(cases_avg_per_100k))
+
+ggplot(covid, aes(x = ymd(date), y = usa_cases)) + 
+  geom_line(linewidth = 1) +
+  geom_point() +
+  scale_x_date(
+    date_breaks = "3 months",
+    date_labels = "%b %Y"
+  )+
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+Ans: There is 1 major spike and 3 minor spikes there.
+
+### b. 
+For the states with the highest and lowest overall rates per population, what differences do you see in their trajectories over time?
+```{r}
+states <- data %>% 
+  group_by(state) %>%
+  summarise(overall_rate = mean(cases_avg,na.rm = TRUE))
+high_state <- states %>% slice_max(overall_rate, n = 1) %>% pull(state)
+low_state  <- states %>% slice_min(overall_rate, n = 1) %>% pull(state)
+
+prob_b <- data %>% 
+  filter(state %in% c(high_state,low_state))
+
+ggplot(prob_b, aes(x = ymd(date), y = cases_avg, color = state, group = state)) + 
+  geom_line(linewidth=1)  +
+    scale_x_date(
+    date_breaks = "3 months",
+    date_labels = "%b %Y"
+  )+
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+### c. 
+Identify, to the best of your ability without a formal test, the first five states to experience Covid in a substantial way.
+```{r}
+first_wave <- data %>%
+  filter(cases_avg_per_100k > 1) %>%
+  group_by(state) %>%
+  summarize(first_date = min(date)) %>%
+  arrange(first_date) %>%
+  slice_head(n = 5)
+
+first_states <- first_wave$state
 
 
+data %>%
+  filter(state %in% first_states) %>%
+  ggplot(aes(x = ymd(date), y = cases_avg_per_100k, color = state,group = state)) +
+  geom_line(linewidth=0.5)  +
+    scale_x_date(
+    date_breaks = "3 months",
+    date_labels = "%b %Y"
+  )+
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
 
 
 
