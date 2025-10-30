@@ -86,20 +86,13 @@ Ans: There are 12 winners with more than 1 match. The most winning player wins 5
 ### c.  
 Is there any evidence that winners have more aces than losers?
 ```{r}
-# the method of using pivot_longer function to convert w_ace and l_ace to "Winner" and "Loser" in a new column "role"
 library(dplyr)
-
-# Keep relevant columns and remove missing values
-aces_data <- data %>%
-  select(w_ace, l_ace) %>%
-  pivot_longer(cols = c(w_ace, l_ace),
-               names_to = "role",
-               values_to = "aces") %>%
-  mutate(role = ifelse(role == "w_ace", "Winner", "Loser")) %>%
-  drop_na()
-
-aces_data %>% group_by(role) %>% summarise(mean_aces = mean(aces), sd_aces = sd(aces))
+library(infer)
+data %>% select(w_ace, l_ace) %>%
+  mutate(diff = w_ace - l_ace) %>%
+  t_test(response = diff, mu = 0) 
 ```
+Ans: From the estimate value and the p-value of the t-test we can say that there is evidence that winners have more aces than losers.
 
 ### d.  
 Identify the player(s) with the highest win-rate. (Note that this is NOT asking for the highest number of wins.) Restrict to players with at least 5 matches.
@@ -110,17 +103,25 @@ player <- data %>%
   pivot_longer(cols = c(winner_id, loser_id),
                names_to = "match_result",
                values_to = "player_id") %>%
-  group_by(player_id) %>%
+  mutate(player_name = if_else(match_result == "winner_id", 
+                               winner_name, 
+                               loser_name)) %>%
+  group_by(player_id, player_name) %>%
   summarise(total_matches = n())
 
+match_win <- data %>% 
+  group_by(winner_id, winner_name) %>%
+  summarise(total_win = n())
+
 player_stats <- player %>%
-  left_join(winners, join_by("player_id" == "winner_id")) %>%
-  mutate(wins = replace_na(total_win, 0),
-         win_rate = wins / total_matches) %>%
+  left_join(match_win, join_by("player_id" == "winner_id", "player_name" == "winner_name")) %>%
+  mutate(total_win = replace_na(total_win, 0),
+         win_rate = total_win / total_matches) %>%
   filter(total_matches >= 5) %>%
   arrange(desc(win_rate))
-head(player_stats,1)
+head(player_stats,5)
 ```
+Ans: Rafael Nadal has the highest winning rate.
 
 ## Problem 3
 ```{r}
