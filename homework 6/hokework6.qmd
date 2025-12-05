@@ -16,6 +16,7 @@ The link to my github repository: [homework 6](https://github.com/snuuym/stats50
 library(Rcpp)
 library(e1071)
 
+#This function is modified by chatgpt
 # Define the C++ code
 cpp_code <- "
 #include <Rcpp.h>
@@ -57,22 +58,22 @@ cat("e1071 Result:  ", res_e1071, "\n")
 ```{r}
 library(methods)
 library(parallel)
-source("wald_ci.R") # Assuming this contains the parent class
+source("wald_ci.R") #the wald_ci is imported from ps5 solution
 
-# 1. Class Definition
 setClass("bootstrapWaldCI",
          contains = "waldCI",
-         slots = c(func = "function",     # Slot name is 'func'
+         slots = c(func = "function",     
                    data = "ANY",
                    reps = "numeric",
-                   compute = "character") # Slot name is 'compute'
+                   compute = "character") 
 )
 
-# 2. Helper Function
+
+#using helper function to handel the different compute method is inspired by gemini
 compute_selection <- function(func, data, reps, compute){
   
   n <- if (is.data.frame(data) || is.matrix(data)) nrow(data) else length(data)
-  
+
   single_boot <- function(i) {
     indices <- sample(n, n, replace = TRUE)
     if (is.data.frame(data) || is.matrix(data)) {
@@ -83,11 +84,9 @@ compute_selection <- function(func, data, reps, compute){
     return(func(resample))
   }
   
-  # Compute mode
   if (compute == "serial") {
     boot_stats <- sapply(1:reps, single_boot)
   } else if (compute == "parallel") {
-    # Note: mclapply works on Mac/Linux. On Windows, it falls back to serial or requires parLapply
     n_cores <- parallel::detectCores() - 1
     boot_stats <- unlist(parallel::mclapply(1:reps, single_boot, mc.cores = n_cores))
   } else {
@@ -97,33 +96,29 @@ compute_selection <- function(func, data, reps, compute){
   return(sd(boot_stats, na.rm = TRUE))
 }
 
-# 3. Constructor
-makeBootstrapCI <- function(stat_func, data, reps = 100, level = 0.95, compute = "serial") {
+makeBootstrapCI <- function(func, data, reps = 100, level = 0.95, compute = "serial") {
   
-  original_est <- stat_func(data)
+  original_est <- func(data)
   
-  # FIX 1: Swapped arguments to match definition (func, data, reps, compute)
-  boot_se <- compute_selection(stat_func, data, reps, compute)
+  boot_se <- compute_selection(func, data, reps, compute)
   
-  # FIX 2: Used correct slot names (func, compute) matching setClass
   new("bootstrapWaldCI",
       level = level,
       mean = original_est,   
       sterr = boot_se,        
       data = data,            
-      func = stat_func,       # Maps argument 'stat_func' to slot 'func'
+      func = func,       
       reps = reps,            
-      compute = compute       # Maps argument 'compute' to slot 'compute'
+      compute = compute       
   )
 }
 
-# 4. Rebootstrap Method
+# additional function rebootstrap
 setGeneric("rebootstrap", function(object) standardGeneric("rebootstrap"))
 
 setMethod("rebootstrap", "bootstrapWaldCI", function(object) {
   cat("Re-running bootstrap with", object@reps, "reps (", object@compute, ")...\n")
   
-  # FIX 3: Swapped arguments and used correct slot names (@func, @compute)
   new_se <- compute_selection(object@func, 
                               object@data, 
                               object@reps, 
@@ -207,6 +202,7 @@ library(dplyr)
 library(ggplot2)
 library(parallel)
 
+#gemini taught me to automatically fit models to separate countries
 countries <- split(df, df$country)
 models <- list()
 running_times <- numeric()
@@ -254,7 +250,7 @@ ggplot(coef_df, aes(x = country, y = est)) +
 ```
 ### b.   
 ```{r}
-# Parallel processing
+# Parallel processing (this is inspired by problem 2)
 
 para_processor <- function(sub_data) {
   library(lme4) 
@@ -304,18 +300,21 @@ nrow(tourneys)
 
 ### b.   
 ```{r}
+#this solution is adapted from the solution of problem set 4, question 2
 multiwinners <- tennis[order(tourney_name, -match_num), .SD[1], by = tourney_name][, .(wins = .N), by = winner_name][wins > 1][order(-wins)]
 nrow(multiwinners)
 multiwinners[1]
 ```
 ### c.  
 ```{r}
+#this solution is adapted from the solution of problem set 4, question 2
 n_success <- tennis[w_ace > l_ace, .N]
 n_total <- tennis[, .N]
 prop.test(n_success, n_total, p = .5)
 ```
 ### d.   
 ```{r}
+#this solution is adapted from the solution of problem set 4, question 2
 most_winners <- melt(tennis[, .(winner_name, loser_name)], 
      measure.vars = c("winner_name", "loser_name"), 
      variable.name = "outcome", 
