@@ -1,0 +1,195 @@
+---
+title: "506 final report"
+format: pdf
+editor: visual
+author: "Sunny Ma"
+date: "`r Sys.Date()`"
+---
+
+## Setup
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(srvyr)      
+library(survey)     
+library(jtools)     
+library(ggsci)    
+```
+
+
+
+## Data Preprocessing
+
+```{r loading}
+data_raw <- read_csv("nonprofit-survey-spring-2021-puf.csv")
+dim(data_raw)
+```
+
+### Variable Selection
+
+Since there are so many variables in our dataset, after a thorough look through the dataset, The following varriables are considered to be the selected covariants.
+1. Organizational variables:
+  a. the location (CENSUSREGION4)
+  b. the size, defined by the number of full-time staff (STAFF_1_1_1)
+  c. the sector (NTMAJ5)
+2. Leader's demographic variables:
+  a. sexuality (CEOBCdem_1_1 CEOBCdem_1_2)
+  b. race (CEORACE BCRACE)
+  c. gender (CEOGENDER BCGENDER)
+  
+```{r}
+selected_df <- data_raw %>%
+  select(
+    org_id = ResponseId,
+    weight = weight_complete_only,
+    
+    #Dependent Variable
+    dv_lgbtq_focus = ProgDem_19,
+    
+    #Independent Variables
+    
+    #Organizational Controls
+    cv_region = CensusRegion4,   # Census Region
+    cv_staff_ft = Staff_1_1_1,   # Full-time Staff Size (as organization size)
+    cv_sector = ntmaj5,     # Major Sector
+  
+    #Leader Demographics
+    
+    #Sexuality
+    cv_ceo_lgbtq = CEOBCdem_1_1,
+    cv_chair_lgbtq = CEOBCdem_1_2,
+    
+    #Age
+    iv_ceo_age = CEOBCdem_3_1,   
+    iv_chair_age = CEOBCdem_3_2, 
+    
+    #Race
+    cv_ceo_race = CEOrace,
+    cv_chair_race = BCrace,
+    
+    #Gender
+    cv_ceo_gender = CEOgender,
+    cv_chair_gender = BCgender
+  )
+```
+
+
+### Data Cleansing
+
+```{r cleansing}
+young_codes = c(1, 2, 3) #<45
+non_cismale_codes = c(2, 3, 4) #female, non-binary, trans
+
+data_clean <- selected_df %>%
+  mutate(
+    #Dependent Variable (DV): LGBTQ+ Focus 
+    dv_lgbtq_focus = case_when(
+      dv_lgbtq_focus %in% c(1, 2) ~ 1,
+      is.na(dv_lgbtq_focus) ~ NA_real_, 
+      TRUE ~ 0
+    ),
+    dv_lgbtq_focus = factor(dv_lgbtq_focus, levels = c(0, 1), labels = c("No Focus", "LGBTQ Focus")),
+    
+    #Independent Variable (IV): Younger Leadership 
+    younger_ceo = if_else(iv_ceo_age %in% young_codes,1,0),  
+    younger_chair = if_else(iv_chair_age %in% young_codes,1,0),
+  
+    iv_young_leadership = case_when(younger_ceo == 1 | younger_chair == 1 ~ 1,
+                                    is.na(younger_ceo) & is.na(younger_chair) ~ NA_real_,
+                                    TRUE ~ 0), 
+    iv_young_leadership = factor(iv_young_leadership, levels = c(0,1), labels  = c("Older (45+)", "Younger (<45)"))
+  ) %>%
+  #Control Variables (Covariates) 
+  mutate(
+    # Log Transformation
+    cv_staff_ft = if_else(cv_staff_ft < 0, NA_real_, cv_staff_ft),
+    log_staff = log10(cv_staff_ft + 1),
+    
+    cv_region = as.factor(cv_region),  #region
+    cv_sector = as.factor(cv_sector), # sector
+    
+    # race
+    poc_ceo = if_else(cv_ceo_race!= 5 & cv_ceo_race > 0, 1, 0),
+    poc_chair = if_else(cv_chair_race != 5 & cv_chair_race > 0, 1, 0),
+    cv_leadership_race = case_when(
+      poc_ceo == 1 | poc_chair == 1 ~ 1,
+      is.na(cv_ceo_race) & is.na(cv_chair_race) ~ NA_real_,
+      TRUE ~ 0
+    ),
+    cv_leadership_race = factor(cv_leadership_race, levels = c(0, 1), labels = c("All White", "BIPOC Representation")),
+    # Sexuality
+    
+    lgbtq_ceo = if_else(cv_ceo_lgbtq == 1, 1, 0),
+    lgbtq_chair = if_else(cv_chair_lgbtq == 1 , 1, 0),
+    cv_leadership_lgbtq = case_when(
+      lgbtq_ceo == 1 | lgbtq_chair == 1 ~ 1,
+      is.na(cv_ceo_lgbtq) & is.na(cv_chair_lgbtq) ~ NA_real_,
+      TRUE ~ 0
+    ),
+    cv_leadership_lgbtq = factor(cv_leadership_lgbtq, levels = c(0, 1),labels = c("No LGBTQ+ Representation", "LGBTQ+ Representation")),
+    
+    # Gender
+    non_cismale_ceo = if_else(cv_ceo_gender %in% non_cismale_codes,1,0),
+    non_cismale_chair = if_else(cv_chair_gender %in% non_cismale_codes,1,0),    
+    cv_noncismale_leadership = case_when(non_cismale_ceo == 1| non_cismale_chair == 1 ~ 1, is.na(non_cismale_ceo) & is.na(non_cismale_chair) ~ NA_real_, TRUE ~ 0),
+    cv_noncismale_leadership = factor(cv_noncismale_leadership,levels = c(0,1), labels = c("All Cis-Male", "Non Cis-Male Representation") )
+  ) %>%
+  drop_na(weight, dv_lgbtq_focus,iv_young_leadership, cv_region, cv_sector, cv_leadership_race, cv_leadership_lgbtq, cv_noncismale_leadership) #cleansing missing values
+```
+
+```{r}
+dim(data_clean)
+```
+
+
+## EDA
+Since this survey has weights, Gemini AI taught me to deals with the weighted data using "survey" and "srvyr" packages.
+```{r}
+svy_design <- data_clean %>% as_survey_design(ids = 1, weights = weight)
+svy_design %>%
+  summarise(
+    unweighted_n = n(),                  
+    weighted_n = survey_total(vartype = NULL)
+  )
+```
+
+
+```{r Visualization}
+library(ggplot2)
+library(ggsci)
+
+svy_design %>%
+  group_by(iv_young_leadership, dv_lgbtq_focus) %>%
+  summarise(prop = survey_mean(), .groups = "drop") %>%
+  ggplot(aes(x = iv_young_leadership, y = prop, fill = dv_lgbtq_focus)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Weighted Association: Leadership Age vs. LGBTQ+ Focus",
+    y = "Proportion of Organizations",
+    x = "Leadership Age Group"
+  ) +
+  theme_minimal() +
+  scale_fill_jco()
+```
+### Modeling
+
+```{r modeling}
+
+final_model <- svyglm(
+  dv_lgbtq_focus ~ iv_young_leadership + 
+                   log_staff + 
+                   cv_region + 
+                   cv_sector + 
+                   cv_leadership_race + 
+                   cv_leadership_lgbtq + 
+                   cv_noncismale_leadership,
+  design = svy_design,
+  family = binomial()
+)
+
+summary(final_model)
+```
+
+
+
